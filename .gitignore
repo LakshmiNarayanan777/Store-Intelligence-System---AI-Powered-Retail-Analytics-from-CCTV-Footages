@@ -1,0 +1,18 @@
+# Data files (do NOT upload videos or large data)
+data/videos/
+*.mp4
+*.avi
+data/events.jsonl
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Database
+*.db
+
+# Env
+.env
+venv/

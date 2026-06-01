@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+
+  # ── Intelligence API ────────────────────────────────────────────────────────
+  api:
+    build: .
+    container_name: store_intelligence_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - db_data:/app/db
+      - ./data:/app/data:ro          # mount data folder (POS CSV, store layout)
+      - ./data/events.jsonl:/app/data/events.jsonl  # pipeline output
+    environment:
+      - DB_PATH=/app/db/store_intelligence.db
+      - POS_DATA_PATH=/app/data/pos_transactions.csv
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # ── Live Dashboard ──────────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: store_intelligence_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  db_data:
