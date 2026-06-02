@@ -198,6 +198,17 @@ tests/test_api.py::TestIngest::test_ingest_idempotent PASSED
 
 ---
 
+## Deployment
+
+This repo can be deployed using Docker-friendly hosts.
+
+- `render.yaml` is included for Render.com with two services:
+  - `store-intelligence-api`
+  - `store-intelligence-dashboard`
+- `dashboard/app.py` can also be hosted on Streamlit Community Cloud.
+
+See [DEPLOY.md](DEPLOY.md) for deployment steps and environment setup.
+
 ## Environment Variables
 
 | Variable | Default | Description |
